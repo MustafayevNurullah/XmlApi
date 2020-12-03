@@ -16,10 +16,10 @@ namespace Task2
         {
             InitializeComponent();
            Controls.Add( CreateTools.CreateGrid());
-            Controls.Add(CreateTools.CreateButton());
+            RequestApi.Request("https://www.cbar.az/currencies/03.12.2020.xml","All");
             Controls.Add(CreateTools.CreateComboBox());
             Controls.Add(CreateTools.CreatedateTimePicker());
-            RequestApi.Request("https://www.cbar.az/currencies/03.12.2020.xml",null);
+            Controls.Add(CreateTools.CreateButton());
         }
 
         private void button1_Click(object sender, EventArgs e)

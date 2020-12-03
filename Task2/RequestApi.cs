@@ -13,12 +13,12 @@ namespace Task2
 {
    public static class RequestApi
     {
- 
-       
+        static int  count;
+      public static ValCurs result;
 
-       public static void Request(string Url,string selecteditem)
+        public static void Request(string Url,string selecteditem)
         {
-            ValCurs result;
+            
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
 
@@ -35,19 +35,18 @@ namespace Task2
                         CreateTools.dataGrid.Rows.Clear();
                         foreach (var item in result.ValType[1].Valute)
                         {
-                            if (selecteditem != null)
+                            
+                            if (selecteditem != "All")
                             {
                                 if (selecteditem == item.Code)
                                 {
                                     row = new string[] { $"{item.Name}", $"{item.Code}", $"{item.Value}" };
                                     CreateTools.dataGrid.Rows.Add(row);
-                                    CreateTools.ComboBox.Items.Add(item.Code);
                                 }
                             }else
                             {
                                 row = new string[] { $"{item.Name}", $"{item.Code}", $"{item.Value}" };
                                 CreateTools.dataGrid.Rows.Add(row);
-                                CreateTools.ComboBox.Items.Add(item.Code);
                             }
 
                         }

@@ -44,11 +44,21 @@ namespace Task2
         }
         private static void BtnClick(object sender, EventArgs e)
         {
+            if (olddate == DateTimePicker.Value.ToString("dd.MM.yyyy"))
+            {
+                Search.SearchDate(ComboBox.SelectedItem.ToString());
+            }
+            else
+            {
+                string a = Url.Replace(olddate, CreateTools.DateTimePicker.Value.ToString("dd.MM.yyyy"));
+               if( ComboBox.SelectedItem !="All")
+                RequestApi.Request(a, ComboBox.SelectedItem.ToString());
+                if (ComboBox.SelectedItem == "All")
+                    RequestApi.Request(a, "All") ;
 
-            string a = Url.Replace(olddate, CreateTools.DateTimePicker.Value.ToString("dd.MM.yyyy"));
+
+            }
             olddate = CreateTools.DateTimePicker.Value.ToString("dd.MM.yyyy");
-            RequestApi.Request(a,ComboBox.SelectedItem.ToString());
-
         }
 
         public static ComboBox CreateComboBox()
@@ -59,10 +69,14 @@ namespace Task2
             ComboBox.Name = "comboBox1";
             ComboBox.Size = new System.Drawing.Size(121, 21);
             ComboBox.TabIndex = 1;
+            ComboBox.Items.Add("All");
+            ComboBox.SelectedItem = "All";
+            foreach (var item in RequestApi.result.ValType[1].Valute)
+            {
+                ComboBox.Items.Add(item.Code);
+            }
 
-
-
-            return ComboBox;
+                return ComboBox;
 
         }
         public static DateTimePicker CreatedateTimePicker()
