@@ -11,19 +11,15 @@ using Task2.Models;
 
 namespace Task2
 {
-   public class RequestApi
+   public static class RequestApi
     {
-       private DataGridView dataGrid;
+ 
+       
 
-        public RequestApi(DataGridView dataGrid)
-        {
-            this.dataGrid = dataGrid;
-        }
-
-       public void Request()
+       public static void Request(string Url,string selecteditem)
         {
             ValCurs result;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(@"https://www.cbar.az/currencies/03.12.2020.xml");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
 
             using (Stream stream = response.GetResponseStream())
@@ -34,20 +30,31 @@ namespace Task2
                     using (TextReader reader1 = new StringReader(reader.ReadToEnd()))
                     {
                          result = (ValCurs)serializer.Deserialize(reader1);
-                        AddGird(result);
+                        string[] row;
+                        CreateTools.dataGrid.Rows.Clear();
+                        foreach (var item in result.ValType[1].Valute)
+                        {
+                            if (selecteditem != null)
+                            {
+                                if (selecteditem == item.Code)
+                                {
+                                    row = new string[] { $"{item.Name}", $"{item.Code}", $"{item.Value}" };
+                                    CreateTools.dataGrid.Rows.Add(row);
+                                    CreateTools.ComboBox.Items.Add(item.Code);
+                                }
+                            }else
+                            {
+                                row = new string[] { $"{item.Name}", $"{item.Code}", $"{item.Value}" };
+                                CreateTools.dataGrid.Rows.Add(row);
+                                CreateTools.ComboBox.Items.Add(item.Code);
+                            }
+
+                        }
                     }
                 }
             }
         }
 
-        private void AddGird(ValCurs result)
-        {
-            string[] row;
-            foreach (var item in result.ValType[1].Valute)
-            {
-                row = new string[] { $"{item.Name}", $"{item.Code}", $"{item.Value}"};
-                dataGrid.Rows.Add(row);
-            }
-        }
+    
     }
 }
