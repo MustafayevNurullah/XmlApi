@@ -26,6 +26,7 @@ namespace Task2
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {
+
                     XmlSerializer serializer = new XmlSerializer(typeof(ValCurs));
                     using (TextReader reader1 = new StringReader(reader.ReadToEnd()))
                     {
